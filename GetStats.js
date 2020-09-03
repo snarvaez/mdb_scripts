@@ -14,15 +14,23 @@ dbs.forEach(function(database) {
     if (reservedDBs.includes(database.name))
         return;
     db = db.getSiblingDB(database.name);
-    print("Obtaining stats for " + database.name);
 
     var stats = db.stats(1024*1024*1024);
     totalIndexSize += stats.indexSize;
     totalDataSize += stats.dataSize;
     totalStorageSize += stats.storageSize;
     totalDocuments += stats.objects;
+
+    print ();
+    print("["+database.name+"] DB");
+    print ("data size in GB: " + stats.dataSize.toFixed(2));
+    print ("index size in GB: " + stats.indexSize.toFixed(2));
+    print ("storage size in GB: " + stats.storageSize.toFixed(2));
+    print ("documents: " + stats.objects.toFixed(0));
 });
 
+print ();
+print ("============================================");
 print ("Total data size in GB: " + totalDataSize.toFixed(2));
 print ("Total index size in GB: " + totalIndexSize.toFixed(2));
 print ("Total storage size in GB: " + totalStorageSize.toFixed(2));
