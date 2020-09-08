@@ -21,12 +21,26 @@ dbs.forEach(function(database) {
     totalStorageSize += stats.storageSize;
     totalDocuments += stats.objects;
 
-    print ();
+    print ("============================================");
     print("["+database.name+"] DB");
+    print ("============================================");
     print ("data size in GB: " + stats.dataSize.toFixed(2));
     print ("index size in GB: " + stats.indexSize.toFixed(2));
     print ("storage size in GB: " + stats.storageSize.toFixed(2));
     print ("documents: " + stats.objects.toFixed(0));
+
+    db.getCollectionNames().forEach(function(collname) {
+        var coll= db.getCollection(collname);
+        var stats = coll.stats(1024*1024);
+        print ();
+        print("["+stats.ns+"] Coll");
+        print ("---------------------------------------");
+        print ("data size in MB: " + stats.size.toFixed(2));
+        print ("index size in MB: " + stats.totalIndexSize.toFixed(2));
+        print ("storage size in MB: " + stats.storageSize.toFixed(2));
+        print ("documents: " + stats.count.toFixed(0));
+        print ();
+    });
 });
 
 print ();
